@@ -25,4 +25,6 @@ struct VirtIORAMFBBaseClass {
     DeviceReset parent_reset;
 };
 
+void virtio_ramfb_realize(VirtIOPCIProxy *vpci_dev, Error **errp);
+
 #endif /* VIRTIO_RAMFB_H */ 

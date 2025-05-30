@@ -8,9 +8,6 @@
 #include "virtio-ramfb.h"
 #include "qom/object.h"
 
-/* Forward declaration of the realize function from virtio-ramfb.c */
-static void virtio_ramfb_realize(VirtIOPCIProxy *vpci_dev, Error **errp);
-
 #define TYPE_VIRTIO_RAMFB_GL "virtio-ramfb-gl"
 
 typedef struct VirtIORAMFBGL VirtIORAMFBGL;

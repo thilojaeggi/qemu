@@ -92,7 +92,7 @@ static const VMStateDescription vmstate_virtio_ramfb = {
 };
 
 /* RAMFB device wrapper around PCI device around virtio GPU */
-static void virtio_ramfb_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+void virtio_ramfb_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
 {
     VirtIORAMFBBase *vramfb = VIRTIO_RAMFB_BASE(vpci_dev);
     VirtIOGPUBase *g = vramfb->vgpu;
