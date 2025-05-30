@@ -8,6 +8,9 @@
 #include "virtio-ramfb.h"
 #include "qom/object.h"
 
+/* Forward declaration of the realize function from virtio-ramfb.c */
+static void virtio_ramfb_realize(VirtIOPCIProxy *vpci_dev, Error **errp);
+
 #define TYPE_VIRTIO_RAMFB_GL "virtio-ramfb-gl"
 
 typedef struct VirtIORAMFBGL VirtIORAMFBGL;
@@ -29,12 +32,24 @@ static void virtio_ramfb_gl_inst_initfn(Object *obj)
     VIRTIO_RAMFB_BASE(dev)->vgpu = VIRTIO_GPU_BASE(&dev->vdev);
 }
 
+static void virtio_ramfb_gl_class_init(ObjectClass *klass, void *data)
+{
+    DeviceClass *dc = DEVICE_CLASS(klass);
+    VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
+    PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
+
+    set_bit(DEVICE_CATEGORY_DISPLAY, dc->categories);
+    dc->hotpluggable = false;
+    k->realize = virtio_ramfb_realize;
+    pcidev_k->class_id = PCI_CLASS_DISPLAY_OTHER;
+}
 
 static VirtioPCIDeviceTypeInfo virtio_ramfb_gl_info = {
     .generic_name  = TYPE_VIRTIO_RAMFB_GL,
     .parent        = TYPE_VIRTIO_RAMFB_BASE,
     .instance_size = sizeof(VirtIORAMFBGL),
     .instance_init = virtio_ramfb_gl_inst_initfn,
+    .class_init    = virtio_ramfb_gl_class_init,
 };
 module_obj(TYPE_VIRTIO_RAMFB_GL);
 
