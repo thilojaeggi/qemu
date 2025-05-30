@@ -142,4 +142,14 @@ endif
 
 system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_lcdc.c'))
 
+if config_all_devices.has_key('CONFIG_FW_CFG_DMA')
+  virtio_ramfb_ss = ss.source_set()
+  virtio_ramfb_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true: files('virtio-ramfb.c'))
+  hw_display_modules += {'virtio-ramfb': virtio_ramfb_ss}
+  virtio_ramfb_gl_ss = ss.source_set()
+  virtio_ramfb_gl_ss.add(when: ['CONFIG_FW_CFG_DMA', virgl, opengl],
+                       if_true: files('virtio-ramfb-gl.c'))
+  hw_display_modules += {'virtio-ramfb-gl': virtio_ramfb_gl_ss}
+endif
+
 modules += { 'hw-display': hw_display_modules }
